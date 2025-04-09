@@ -4,7 +4,7 @@ let countriesListArray = [];
 function countriesList() {
   let countriesList = document.getElementById("countriesList");
   let body = "";
-  fetch("json/countries.json")
+  fetch("https://restcountries.com/v3.1/all")
     .then((res) => res.json())
     .then((dataList) => {
       countriesListArray = dataList;
