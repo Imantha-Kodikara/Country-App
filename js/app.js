@@ -4,12 +4,14 @@ let countriesListArray = [];
 function countriesList() {
   let countriesList = document.getElementById("countriesList");
   let body = "";
-  fetch("json/countries.json")
+  fetch("https://restcountries.com/v3.1/all")
     .then((res) => res.json())
     .then((dataList) => {
       countriesListArray = dataList;
       dataList.forEach((element) => {
-        body += `<div class="col">
+        body += `<div class="col" data-aos="fade-down"
+     data-aos-easing="linear"
+     data-aos-duration="1500">
                 <div class="card shadow-sm">
                     <img src="${element.flags.png}" alt="${element.flags.alt}">
                     <h2 class="card-text">${element.name.common}</h2>
@@ -59,10 +61,19 @@ function loadModal(index) {
 }
 
 function loadCountryDetails() {
-  let countryName = document.getElementById("default-search").value;
-  fetch(`https://restcountries.com/v3.1/name/${countryName}`)
-    .then((res) => res.json())
-    .then((dataList) => {
-      console.log(dataList);
-    });
+  let searchedCountry = document
+    .getElementById("default-search")
+    .value.trim()
+    .toLowerCase();
+  let position = countriesListArray.findIndex(
+    (country) => country.name.common.toLowerCase() === searchedCountry
+  );
+
+  if (position !== -1) {
+    loadModal(position);
+    let modal = new bootstrap.Modal(document.getElementById("staticBackdrop"));
+    modal.show();
+  } else {
+    alert("Country Not Found...");
+  }
 }
